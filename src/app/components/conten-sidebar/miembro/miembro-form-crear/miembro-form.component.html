@@ -1,0 +1,95 @@
+<h2 mat-dialog-title>{{editMode ? 'Editar' : 'Crear'}} Miembro</h2>
+<form [formGroup]="miembroForm" (ngSubmit)="onSubmit()">
+  <mat-dialog-content class="form-content">
+    <div class="form-grid">
+      <!-- Primera columna -->
+      <div class="form-column">
+        <mat-form-field >
+          <mat-label>Seleccionar Persona Existente</mat-label>
+          <mat-select (selectionChange)="onPersonaSelect($event)">
+            <mat-option *ngFor="let persona of personas" [value]="persona">
+              {{persona.nombre}} {{persona.apellido}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field>
+          <mat-label>Nombre</mat-label>
+          <input matInput formControlName="nombre">
+        </mat-form-field>
+
+        <mat-form-field>
+          <mat-label>CI</mat-label>
+          <input matInput type="number" formControlName="ci">
+        </mat-form-field>
+
+        <mat-form-field>
+          <mat-label>Fecha de Nacimiento</mat-label>
+          <input matInput [matDatepicker]="fechaNacPicker" formControlName="fechaNac">
+          <mat-datepicker-toggle matSuffix [for]="fechaNacPicker"></mat-datepicker-toggle>
+          <mat-datepicker #fechaNacPicker></mat-datepicker>
+        </mat-form-field>
+
+        <mat-form-field>
+          <mat-label>Dirección</mat-label>
+          <input matInput formControlName="direccion">
+        </mat-form-field>
+
+        <mat-form-field>
+          <mat-label>Lugar de Conversión</mat-label>
+          <input matInput formControlName="lugarConvercion">
+        </mat-form-field>
+
+        <mat-form-field>
+          <mat-label>Interventores</mat-label>
+          <input matInput formControlName="interventores">
+        </mat-form-field>
+      </div>
+
+      <!-- Segunda columna -->
+      <div class="form-column">
+        <mat-form-field>
+          <mat-label>Apellido</mat-label>
+          <input matInput formControlName="apellido">
+        </mat-form-field>
+
+        <mat-form-field>
+          <mat-label>Celular</mat-label>
+          <input matInput formControlName="celular">
+        </mat-form-field>
+
+        <mat-form-field>
+          <mat-label>Sexo</mat-label>
+          <mat-select formControlName="sexo">
+            <mat-option value="Masculino">Masculino</mat-option>
+            <mat-option value="Femenino">Femenino</mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field>
+          <mat-label>URI Foto</mat-label>
+          <input matInput formControlName="uriFoto">
+        </mat-form-field>
+
+        <mat-form-field>
+          <mat-label>Fecha de Conversión</mat-label>
+          <input matInput [matDatepicker]="fechaConvPicker" formControlName="fechaConvercion">
+          <mat-datepicker-toggle matSuffix [for]="fechaConvPicker"></mat-datepicker-toggle>
+          <mat-datepicker #fechaConvPicker></mat-datepicker>
+        </mat-form-field>
+
+        <mat-form-field>
+          <mat-label>Detalles</mat-label>
+          <textarea matInput formControlName="detalles" rows="3"></textarea>
+        </mat-form-field>
+      </div>
+    </div>
+  </mat-dialog-content>
+
+  <mat-dialog-actions align="end">
+    <button mat-button mat-dialog-close>Cancelar</button>
+    <button mat-raised-button color="primary" type="submit" [disabled]="!miembroForm.valid">
+      {{editMode ? 'Actualizar' : 'Crear'}}
+    </button>
+  </mat-dialog-actions>
+</form>

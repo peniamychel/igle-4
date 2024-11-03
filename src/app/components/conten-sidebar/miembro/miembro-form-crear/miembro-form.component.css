@@ -1,0 +1,30 @@
+.form-content {
+  min-width: 800px;
+  max-height: 80vh;
+  overflow-y: auto;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+.form-column {
+  display: flex;
+  flex-direction: column;
+}
+
+mat-form-field {
+  width: 100%;
+  margin-bottom: 16px;
+}
+
+textarea {
+  min-height: 100px;
+}
+
+mat-dialog-actions {
+  margin-top: 20px;
+  padding: 16px 0;
+}

@@ -1,0 +1,28 @@
+.container {
+  padding: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.mat-table {
+  width: 100%;
+  margin-top: 20px;
+}
+
+.mat-cell {
+  padding: 8px;
+}
+
+.mat-header-cell {
+  font-weight: bold;
+  color: rgba(0, 0, 0, 0.87);
+}
+
+.action-buttons {
+  display: flex;
+  gap: 8px;
+}
+
+button[mat-raised-button] {
+  margin-bottom: 16px;
+}

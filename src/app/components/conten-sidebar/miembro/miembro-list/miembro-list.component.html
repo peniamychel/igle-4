@@ -1,0 +1,53 @@
+<div class="container">
+  <button mat-raised-button color="primary" (click)="openCreateDialog()">
+    <mat-icon>add</mat-icon> Crear Miembro
+  </button>
+
+  <mat-table [dataSource]="miembros" class="mat-elevation-z8">
+    <ng-container matColumnDef="nombreCompleto">
+      <mat-header-cell *matHeaderCellDef> Nombre Completo </mat-header-cell>
+      <mat-cell *matCellDef="let miembro"> 
+        {{miembro.personaDto?.nombre}} {{miembro.personaDto?.apellido}} 
+      </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="celular">
+      <mat-header-cell *matHeaderCellDef> Celular </mat-header-cell>
+      <mat-cell *matCellDef="let miembro"> {{miembro.personaDto?.celular}} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="direccion">
+      <mat-header-cell *matHeaderCellDef> Dirección </mat-header-cell>
+      <mat-cell *matCellDef="let miembro"> {{miembro.personaDto?.direccion}} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="fechaConvercion">
+      <mat-header-cell *matHeaderCellDef> Fecha Conversión </mat-header-cell>
+      <mat-cell *matCellDef="let miembro"> {{formatDate(miembro.fechaConvercion)}} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="sexo">
+      <mat-header-cell *matHeaderCellDef> Sexo </mat-header-cell>
+      <mat-cell *matCellDef="let miembro"> {{miembro.personaDto?.sexo}} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="acciones">
+      <mat-header-cell *matHeaderCellDef> Acciones </mat-header-cell>
+      <mat-cell *matCellDef="let miembro">
+        <button mat-icon-button color="primary" (click)="openEditDialog(miembro)">
+          <mat-icon>edit</mat-icon>
+        </button>
+        <button mat-icon-button [color]="miembro.estado ? 'accent' : 'warn'"
+                (click)="toggleEstado(miembro)">
+          <mat-icon>{{miembro.estado ? 'check_circle' : 'cancel'}}</mat-icon>
+        </button>
+        <button mat-icon-button color="primary" (click)="openDetailDialog(miembro)">
+          <mat-icon>visibility</mat-icon>
+        </button>
+      </mat-cell>
+    </ng-container>
+
+    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+  </mat-table>
+</div>
