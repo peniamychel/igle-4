@@ -47,10 +47,6 @@ import {PersonaFormEditarComponent} from '../persona-form-editar/persona-form-ed
           Nueva Persona
         </button>
 
-        <mat-radio-group aria-label="Select an option">
-          <mat-radio-button value="1">Option 1</mat-radio-button>
-          <mat-radio-button value="2">Option 2</mat-radio-button>
-        </mat-radio-group>
 <!--        <button mat-raised-button color="primary" (click)="openCreateDialog()">-->
 <!--          <mat-icon>add</mat-icon>-->
 <!--          Crear Persona-->
@@ -62,7 +58,6 @@ import {PersonaFormEditarComponent} from '../persona-form-editar/persona-form-ed
           <mat-icon matSuffix>search</mat-icon>
         </mat-form-field>
       </div>
-
 
       <mat-table [dataSource]="personas" matSort class="mat-elevation-z8 demo-table">
         <ng-container matColumnDef="nombre" >
@@ -142,10 +137,9 @@ import {PersonaFormEditarComponent} from '../persona-form-editar/persona-form-ed
     .mat-cell {
       padding: 8px;
     }
-
-
-
-
+    mat-row:hover {
+      background-color: #e0f7fa; /* Cambia este color a uno de tu preferencia */
+    }
 
   `]
 })

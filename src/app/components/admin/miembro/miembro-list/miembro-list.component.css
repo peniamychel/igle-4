@@ -26,3 +26,7 @@
 button[mat-raised-button] {
   margin-bottom: 16px;
 }
+
+mat-row:hover {
+  background-color: #e0f7fa; /* Cambia este color a uno de tu preferencia */
+}

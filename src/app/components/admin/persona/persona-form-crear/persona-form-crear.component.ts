@@ -124,8 +124,10 @@ export class PersonaFormCrearComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: Persona
   ) {
     this.personaForm = this.fb.group({
-      nombre: ['', [Validators.required, Validators.pattern('^[a-zA-Z]*$'), Validators.minLength(3)]],
-      apellido: ['', [Validators.required, Validators.pattern('^[a-zA-Z]*$'), Validators.minLength(3)]],
+
+      nombre: ['', [Validators.required, Validators.pattern('^[a-zA-Z]+( [a-zA-Z]+)*$'), Validators.minLength(3)]],
+
+      apellido: ['', [Validators.required, Validators.pattern('^[a-zA-Z]+( [a-zA-Z]+)*$'), Validators.minLength(3)]],
       ci: ['',
         [Validators.required, Validators.pattern(/^\d.*/), Validators.minLength(4)],
         [this.ciValidator.bind(this)]],

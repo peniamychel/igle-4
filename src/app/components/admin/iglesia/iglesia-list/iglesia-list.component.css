@@ -43,3 +43,7 @@
   width: 120px;
   text-align: center;
 }
+
+mat-row:hover {
+  background-color: #e0f7fa; /* Cambia este color a uno de tu preferencia */
+}

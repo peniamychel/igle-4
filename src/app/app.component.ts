@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import {NavigationComponent} from './navigation/navigation.component';
-import {SidenavComponent} from './components/sidenav/sidenav.component';
+import {NavigationComponent} from './shared/navigation/navigation.component';
+import {SidenavComponent} from './shared/sidenav/sidenav.component';
 
 @Component({
   selector: 'app-root',
