@@ -1,0 +1,28 @@
+mat-form-field {
+  width: 100%;
+  margin-bottom: 16px;
+}
+.row{
+  display: flex;
+  /*justify-content: space-between;*/
+  /*justify-width: space-between;*/
+  gap: 16px;
+}
+.row > * {
+  flex: 1; /* Hace que todos los elementos hijos ocupen el mismo ancho */
+  min-width: 0; /* Previene problemas con elementos que no se ajustan */
+}
+
+.realiniar{
+  margin-bottom: -8px;
+}
+.botones {
+  display: flex; /* Flexbox para alinear los botones */
+  justify-content: center; /* Centrar los botones horizontalmente */
+  gap: 10px; /* Espaciado entre los botones */
+}
+
+.botones button {
+  flex: 1; /* Ambos botones ocupan el mismo ancho */
+  max-width: 200px; /* Opcional: Limitar el ancho máximo */
+}

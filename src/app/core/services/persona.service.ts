@@ -45,4 +45,10 @@ export class PersonaService {
   buscarCi(ci: string): Observable<Persona> {
     return this.http.get<Persona>(`${this.apiUrl}/showbyci/${ci}`, { headers: this.getHeaders() });
   }
+
+  uploadUserPhoto(id: number, file: File): Observable<any> {
+    const formData = new FormData();
+    formData.append('file', file);
+    return this.http.post(`${this.apiUrl}/${id}/foto`, formData);
+  }
 }

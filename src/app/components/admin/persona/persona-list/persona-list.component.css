@@ -1,14 +1,11 @@
-.container {
-  padding: 20px;
-  max-width: 1200px;
-  margin: 0 auto;
-}
-
 .nuevoPersona-bucar{
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-bottom: 10px;
+}
+.container {
+  padding: 20px;
 }
 
 .mat-table {
@@ -19,21 +16,6 @@
 .mat-cell {
   padding: 8px;
 }
-
-.mat-header-cell {
-  font-weight: bold;
-  color: rgba(0, 0, 0, 0.87);
-}
-
-.action-buttons {
-  display: flex;
-  gap: 8px;
-}
-
-button[mat-raised-button] {
-  margin-bottom: 16px;
-}
-
 mat-row:hover {
   background-color: #e0f7fa; /* Cambia este color a uno de tu preferencia */
 }

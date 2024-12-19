@@ -1,4 +1,4 @@
-import {Component, Inject, OnInit} from '@angular/core';
+import {Component, inject, Inject, OnInit} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {
   AbstractControl,
@@ -19,6 +19,10 @@ import {Persona} from '../../../../core/models/persona.model';
 import {MatRadioButton, MatRadioGroup} from '@angular/material/radio';
 import {catchError, Observable, of} from 'rxjs';
 import {map} from 'rxjs/operators';
+import {MatIconModule} from '@angular/material/icon';
+import {ImagePreviewDialogComponent} from '../../usuario-sistema/imagen-preview-dialog/image-preview-dialog.component';
+import {MatSnackBar} from '@angular/material/snack-bar';
+import {MatButtonToggle, MatButtonToggleGroup} from '@angular/material/button-toggle';
 
 @Component({
   selector: 'app-persona-form',
@@ -33,94 +37,26 @@ import {map} from 'rxjs/operators';
     MatSelectModule,
     MatDialogModule,
     MatRadioButton,
-    MatRadioGroup
+    MatRadioGroup,
+    MatIconModule,
+    MatButtonToggle,
+    MatButtonToggleGroup,
+
   ],
-  template: `
-    <h2 mat-dialog-title>{{editMode ? 'Editar' : 'Crear'}} Persona</h2>
-    <form [formGroup]="personaForm" (ngSubmit)="onSubmit()">
-      <mat-dialog-content>
-        <mat-form-field appearance="fill">
-          <mat-label>Nombre</mat-label>
-          <input matInput formControlName="nombre">
-          <mat-error>
-            {{ getErrorMessageNombre('nombre') }}
-          </mat-error>
-        </mat-form-field>
-
-        <mat-form-field appearance="fill">
-          <mat-label>Apellido</mat-label>
-          <input matInput formControlName="apellido">
-          <mat-error>
-            {{ getErrorMessageApellido('apellido') }}
-          </mat-error>
-        </mat-form-field>
-
-        <mat-form-field appearance="fill">
-          <mat-label>CI</mat-label>
-          <input matInput formControlName="ci">
-          <mat-error>
-            {{ getErrorMessageCi('ci') }}
-          </mat-error>
-        </mat-form-field>
-
-        <mat-form-field appearance="fill">
-          <mat-label>Fecha de Nacimiento</mat-label>
-          <input matInput [matDatepicker]="picker" formControlName="fechaNac">
-          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-          <mat-datepicker #picker></mat-datepicker>
-          <mat-error>
-            {{ getErrorMessage('fechaNac') }}
-          </mat-error>
-        </mat-form-field>
-
-        <mat-radio-group aria-label="Selecione el sexo" appearance="fill" formControlName="sexo">
-          <mat-label>Sexo:</mat-label>
-          <mat-radio-button value="Masculino">Masculino</mat-radio-button>
-          <mat-radio-button value="Femenino">Femenino</mat-radio-button>
-          <mat-error>
-            {{ getErrorMessage('sexo') }}
-          </mat-error>
-        </mat-radio-group>
-
-        <mat-form-field appearance="fill">
-          <mat-label>Celular</mat-label>
-          <input matInput>
-        </mat-form-field>
-
-        <mat-form-field appearance="fill">
-          <mat-label>Dirección</mat-label>
-          <input matInput formControlName="direccion">
-        </mat-form-field>
-
-        <mat-form-field appearance="fill">
-          <mat-label>URI Foto</mat-label>
-          <input matInput formControlName="uriFoto">
-        </mat-form-field>
-      </mat-dialog-content>
-
-      <mat-dialog-actions align="end">
-        <button mat-button mat-dialog-close>Cancelar</button>
-        <button mat-raised-button color="primary" type="submit" [disabled]="!personaForm.valid">
-          {{editMode ? 'Actualizar' : 'Crear'}}
-        </button>
-      </mat-dialog-actions>
-    </form>
-  `,
-  styles: [`
-    mat-form-field {
-      width: 100%;
-      margin-bottom: 16px;
-    }
-  `]
+  templateUrl: './persona-form-crear.component.html',
+  styleUrls: ['./persona-form-crear.component.css']
 })
 export class PersonaFormCrearComponent implements OnInit {
   personaForm: FormGroup;
-  editMode = false;
+
+  private personaService = inject(PersonaService);
+  private fb = inject(FormBuilder);
+  private matDialogRef= inject(MatDialogRef<PersonaFormCrearComponent>);
+  private snackBar: MatSnackBar = inject(MatSnackBar);
+
+  selectedFile: File | null = null;
 
   constructor(
-    private fb: FormBuilder,
-    private personaService: PersonaService,
-    private dialogRef: MatDialogRef<PersonaFormCrearComponent>,
     @Inject(MAT_DIALOG_DATA) public data: Persona
   ) {
     this.personaForm = this.fb.group({
@@ -147,7 +83,6 @@ export class PersonaFormCrearComponent implements OnInit {
 
   ngOnInit() {
     if (this.data) {
-      this.editMode = true;
       this.personaForm.patchValue(this.data);
     }
   }
@@ -157,18 +92,52 @@ export class PersonaFormCrearComponent implements OnInit {
       const persona = {
         ...this.data,
         ...this.personaForm.value
-      }
+      };
+      this.personaService.createPersona(persona).subscribe( {
+        next: (response) => {
+          if (this.selectedFile && response.datos.id) {
+            this.personaService.uploadUserPhoto(response.datos.id, this.selectedFile).subscribe({
+              next: () => {
+                this.snackBar.open('Persona creado exitosamente', 'Cerrar', {
+                  duration: 3000,
+                  panelClass: ['success-snackbar']
+                });
+                this.matDialogRef.close(true);
+              },
+              error: () => {
+                this.snackBar.open('Error al subir la foto', 'Cerrar', {
+                  duration: 3000,
+                  panelClass: ['error-snackbar']
+                });
+                this.matDialogRef.close(true);
+              }
+            });
+          } else {
+            this.snackBar.open('Persona creado exitosamente', 'Cerrar', {
+              duration: 3000,
+              panelClass: ['success-snackbar']
+            });
+            this.matDialogRef.close(true);
+          }
 
-      if (this.editMode) {
+          this.snackBar.open('Persona creado exitosamente', 'Cerrar', {
+            duration: 3000,
+            panelClass: ['success-snackbar']
+          });
 
-        this.personaService.updatePersona(persona).subscribe(() => {
-          this.dialogRef.close(true);
-        });
-      } else {
-        this.personaService.createPersona(persona).subscribe(() => {
-          this.dialogRef.close(true);
-        });
-      }
+          this.matDialogRef.close(true);
+        },
+        error: (err) => {
+          console.error('Error al crear la persona:', err);
+        },
+        complete: () => {
+          console.log('Solicitud completada.');
+          this.snackBar.open('Error al crear Persona', 'Cerrar', {
+            duration: 3000,
+            panelClass: ['error-snackbar']
+          });
+        }
+      });
     }
   }
 
@@ -221,8 +190,36 @@ export class PersonaFormCrearComponent implements OnInit {
   getErrorMessage(controlName: string): string {
     const control = this.personaForm.get(controlName);
     if (control?.hasError('required')) {
-      return 'Capo es requerido';
+      return 'Campo es requerido';
     }
     return '';
   }
+
+  getErrorMessageSexo(controlName: string): string {
+    const control = this.personaForm.get(controlName);
+    if (control?.hasError('required')) {
+      return 'Seleccione un sexo *';
+    }
+    return '';
+  }
+
+  //Gestion de subida de archivos
+  onFileSelected(event: any): void {
+    const file = event.target.files[0];
+    if (file) {
+      this.selectedFile = file;
+    }
+  }
+
+  // openImagePreview(): void {
+  //   const imageUrl = this.previewUrl || this.data.uriFoto;
+  //   if (imageUrl) {
+  //     this.dialog.open(ImagePreviewDialogComponent, {
+  //       data: { imageUrl, alt: this.data.username },
+  //       maxWidth: '100vw',
+  //       maxHeight: '100vh',
+  //       panelClass: 'image-preview-dialog'
+  //     });
+  //   }
+  // }
 }

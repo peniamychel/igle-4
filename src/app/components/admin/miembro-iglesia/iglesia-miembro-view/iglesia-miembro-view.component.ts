@@ -15,7 +15,7 @@ import { MiembroIglesiaService } from '../../../../core/services/miembro-iglesia
 import { Iglesia } from '../../../../core/models/iglesia.model';
 import { Miembro } from '../../../../core/models/miembro.model';
 import { MiembroIglesia } from '../../../../core/models/miembro-iglesia.model';
-import { MiembroIglesiaFormComponent } from '../modals/miembro-iglesia-form-traspaso/miembro-iglesia-form.component';
+import { MiembroIglesiaFormTraspasoComponent } from '../modals/miembro-iglesia-form-traspaso/miembro-iglesia-form.component';
 import { MiembroIglesiaDetailComponent } from '../modals/miembro-iglesia-detail/miembro-iglesia-detail.component';
 import { ConfirmDialogComponent } from '../../../../shared/confirm-dialog/confirm-dialog.component';
 import * as XLSX from 'xlsx';
@@ -131,7 +131,7 @@ export class IglesiaMiembroViewComponent implements OnInit {
   openTraspasoDialog(miembro: Miembro) {
     if (!this.selectedIglesia) return;
 
-    const dialogRef = this.dialog.open(MiembroIglesiaFormComponent, {
+    const dialogRef = this.dialog.open(MiembroIglesiaFormTraspasoComponent, {
       width: '600px',
       data: { miembro, iglesia: this.selectedIglesia }
     });

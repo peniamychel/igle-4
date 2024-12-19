@@ -19,6 +19,7 @@ import { Persona } from '../../../../core/models/persona.model';
 import {MatRadioButton, MatRadioGroup} from '@angular/material/radio';
 import {catchError, Observable, of} from 'rxjs';
 import {map} from 'rxjs/operators';
+import {MatIcon} from '@angular/material/icon';
 
 @Component({
   selector: 'app-persona-form',
@@ -33,74 +34,16 @@ import {map} from 'rxjs/operators';
     MatSelectModule,
     MatDialogModule,
     MatRadioButton,
-    MatRadioGroup
+    MatRadioGroup,
+    MatIcon
   ],
-  template: `
-      <h2 mat-dialog-title>{{editMode ? 'Editar' : 'Crear'}} Persona</h2>
-      <form [formGroup]="personaForm" (ngSubmit)="onSubmit()">
-          <mat-dialog-content>
-              <mat-form-field appearance="fill">
-                  <mat-label>Nombre</mat-label>
-                  <input matInput formControlName="nombre">
-              </mat-form-field>
-
-              <mat-form-field appearance="fill">
-                  <mat-label>Apellido</mat-label>
-                  <input matInput formControlName="apellido">
-              </mat-form-field>
-
-              <mat-form-field appearance="fill">
-                  <mat-label>CI</mat-label>
-                  <input matInput formControlName="ci">
-              </mat-form-field>
-
-              <mat-form-field appearance="fill">
-                  <mat-label>Fecha de Nacimiento</mat-label>
-                  <input matInput [matDatepicker]="picker" formControlName="fechaNac">
-                  <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                  <mat-datepicker #picker></mat-datepicker>
-              </mat-form-field>
-
-              <mat-radio-group aria-label="Selecione el sexo" appearance="fill" formControlName="sexo">
-                  <mat-label>Sexo:</mat-label>
-                  <mat-radio-button value="Masculino">Masculino</mat-radio-button>
-                  <mat-radio-button value="Femenino">Femenino</mat-radio-button>
-              </mat-radio-group>
-
-              <mat-form-field appearance="fill">
-                  <mat-label>Celular</mat-label>
-                  <input matInput>
-              </mat-form-field>
-
-              <mat-form-field appearance="fill">
-                  <mat-label>Dirección</mat-label>
-                  <input matInput formControlName="direccion">
-              </mat-form-field>
-
-              <mat-form-field appearance="fill">
-                  <mat-label>URI Foto</mat-label>
-                  <input matInput formControlName="uriFoto">
-              </mat-form-field>
-          </mat-dialog-content>
-
-          <mat-dialog-actions align="end">
-              <button mat-button mat-dialog-close>Cancelar</button>
-              <button mat-raised-button color="primary" type="submit" [disabled]="!personaForm.valid">
-                  {{editMode ? 'Actualizar' : 'Crear'}}
-              </button>
-          </mat-dialog-actions>
-      </form>
-  `,
-  styles: [`
-    mat-form-field {
-      width: 100%;
-      margin-bottom: 16px;
-    }
-  `]
+  templateUrl: './persona-form-editar.component.html',
+  styleUrls: ['./persona-form-editar.component.css']
 })
 export class PersonaFormEditarComponent implements OnInit {
   personaForm: FormGroup;
   editMode = false;
+  selectedFile: File | null = null;
 
   constructor(
     private fb: FormBuilder,
@@ -113,7 +56,9 @@ export class PersonaFormEditarComponent implements OnInit {
       apellido: ['', [Validators.required, Validators.pattern('^[a-zA-Z]+( [a-zA-Z]+)*$'), Validators.minLength(3)]],
       ci: ['', [Validators.required]],
       fechaNac: ['', Validators.required],
-      sexo: ['', Validators.required]
+      sexo: ['', Validators.required],
+      celular: ['', Validators.required],
+      direccion: ['', Validators.required]
     });
   }
 
@@ -150,6 +95,13 @@ export class PersonaFormEditarComponent implements OnInit {
           this.dialogRef.close(true);
         });
       }
+    }
+  }
+
+  onFileSelected(event: any): void {
+    const file = event.target.files[0];
+    if (file) {
+      this.selectedFile = file;
     }
   }
 }

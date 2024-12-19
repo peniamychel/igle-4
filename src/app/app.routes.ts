@@ -7,7 +7,10 @@ import {IglesiaListComponent} from './components/admin/iglesia/iglesia-list/igle
 import {IglesiaMiembroListComponent} from './components/admin/miembro-iglesia/iglesia-miembro-list/iglesia-miembro-list.component';
 import {ChartsComponent} from './components/graficos/charts/charts.component';
 import {authGuard} from './core/guards/auth.guard';
-import {UsuarioSistemaComponent} from './components/admin/usuario-sistema/usuario-sistema.component';
+import {LoginComponent} from './components/auth/login2/login.component';
+import {UserTableComponent} from './components/admin/usuario-sistema/user-table/user-table.component';
+import {adminGuard} from './core/guards/admin.guard';
+import {encIglesiaGuard} from './core/guards/enc-iglesia.guard';
 
 
 export const routes: Routes = [
@@ -26,29 +29,32 @@ export const routes: Routes = [
     path: 'persona',
     component: PersonaListComponent,
     title: 'Persona',
+    canActivate :[authGuard]
   },
   {
     path: 'iglesia',
     component: IglesiaListComponent,
     title: 'Iglesia',
+    canActivate :[authGuard]
   },
   {
     path: 'miembroiglesia',
     component: IglesiaMiembroListComponent,
     title: 'Iglesia',
+    canActivate :[authGuard]
   },
   {
     path: 'graficoiglesias',
     component: ChartsComponent,
     title: 'Grafico',
+    canActivate :[authGuard]
   },
   {
     path: 'usuariosistema',
-    component: UsuarioSistemaComponent,
+    component: UserTableComponent,
     title: 'Usuario Sistema',
+    canActivate :[authGuard, adminGuard]
   },
-
-
 
 
   { path: '**', redirectTo: '' },

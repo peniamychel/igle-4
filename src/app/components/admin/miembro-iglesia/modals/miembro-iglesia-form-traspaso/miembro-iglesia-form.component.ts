@@ -60,7 +60,7 @@ export class MiembroIglesiaFormTraspasoComponent {
     if (this.form.valid) {
       // Update current membership
       const currentMembership = {
-        id: 36,
+        id: 42,
         miembroId: this.data.miembro.id,
         iglesiaId: this.data.iglesia.id,
         motivoTraspaso: this.form.value.motivoTraspaso,

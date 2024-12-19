@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { MatTableModule } from '@angular/material/table';
+import {MatTableDataSource, MatTableModule} from '@angular/material/table';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatDialogModule, MatDialog } from '@angular/material/dialog';
@@ -9,6 +9,11 @@ import { Miembro } from '../../../../core/models/miembro.model';
 import { MiembroFormCrearComponent} from '../miembro-form-crear/miembro-form.component';
 import { MiembroDetailComponent } from '../miembro-detail/miembro-detail.component';
 import {MiembroFormEditarComponent} from '../miembro-form-editar/miembro-form.component';
+import {MatFormField, MatLabel, MatSuffix} from '@angular/material/form-field';
+import {MatInput} from '@angular/material/input';
+import {Persona} from '../../../../core/models/persona.model';
+import {MatPaginator} from '@angular/material/paginator';
+import {MatSort, MatSortHeader} from '@angular/material/sort';
 
 @Component({
   selector: 'app-miembro-list',
@@ -18,7 +23,14 @@ import {MiembroFormEditarComponent} from '../miembro-form-editar/miembro-form.co
     MatTableModule,
     MatButtonModule,
     MatIconModule,
-    MatDialogModule
+    MatDialogModule,
+    MatFormField,
+    MatInput,
+    MatLabel,
+    MatSuffix,
+    MatPaginator,
+    MatSort,
+    MatSortHeader
   ],
 
   templateUrl: './miembro-list.component.html',
@@ -26,8 +38,14 @@ import {MiembroFormEditarComponent} from '../miembro-form-editar/miembro-form.co
 
 })
 export class MiembroListComponent implements OnInit {
-  miembros: Miembro[] = [];
+  miembros = new MatTableDataSource<Miembro>([]);
+  miembros2: Miembro[] = [];
   displayedColumns: string[] = ['nombreCompleto', 'celular', 'direccion', 'fechaConvercion', 'sexo', 'acciones'];
+
+  @ViewChild(MatSort) sort!: MatSort;
+  // @ViewChild(MatTable) table!: MatTable<Persona>;
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
+  // @ViewChild('input') input!: ElementRef;
 
   constructor(
     private miembroService: MiembroService,
@@ -40,7 +58,9 @@ export class MiembroListComponent implements OnInit {
 
   loadMiembros() {
     this.miembroService.getMiembros().subscribe(response => {
-      this.miembros = response.datos;
+      this.miembros.data = response.datos;
+      this.miembros.paginator = this.paginator;
+      this.miembros.sort = this.sort;
     });
   }
 
@@ -90,6 +110,15 @@ export class MiembroListComponent implements OnInit {
       this.miembroService.toggleEstado(miembro.id).subscribe(() => {
         this.loadMiembros();
       });
+    }
+  }
+
+  applyFilter(event: Event) {
+    const filterValue = (event.target as HTMLInputElement).value;
+    this.miembros.filter = filterValue.trim().toLowerCase();
+
+    if (this.miembros.paginator) {
+      this.miembros.paginator.firstPage();
     }
   }
 }

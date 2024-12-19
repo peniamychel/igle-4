@@ -39,109 +39,8 @@ import {PersonaFormEditarComponent} from '../persona-form-editar/persona-form-ed
     MatRadioGroup,
     MatRadioModule
   ],
-  template: `
-    <div class="container">
-      <div class="nuevoPersona-bucar">
-        <button mat-raised-button color="primary" (click)="openCreateDialog()" >
-          <mat-icon>add</mat-icon>
-          Nueva Persona
-        </button>
-
-<!--        <button mat-raised-button color="primary" (click)="openCreateDialog()">-->
-<!--          <mat-icon>add</mat-icon>-->
-<!--          Crear Persona-->
-<!--        </button>-->
-
-        <mat-form-field appearance="outline">
-          <mat-label>Buscar</mat-label>
-          <input matInput (keyup)="applyFilter($event)" placeholder="Ej. Primera Iglesia" #input>
-          <mat-icon matSuffix>search</mat-icon>
-        </mat-form-field>
-      </div>
-
-      <mat-table [dataSource]="personas" matSort class="mat-elevation-z8 demo-table">
-        <ng-container matColumnDef="nombre" >
-          <mat-header-cell *matHeaderCellDef mat-sort-header > Nombre</mat-header-cell>
-          <mat-cell *matCellDef="let persona"> {{persona.nombre}} </mat-cell>
-        </ng-container>
-
-        <ng-container matColumnDef="apellido">
-          <mat-header-cell *matHeaderCellDef mat-sort-header> Apellidos</mat-header-cell>
-          <mat-cell *matCellDef="let persona"> {{persona.apellido}} </mat-cell>
-        </ng-container>
-
-        <ng-container matColumnDef="celular">
-          <mat-header-cell *matHeaderCellDef mat-sort-header> Celular</mat-header-cell>
-          <mat-cell *matCellDef="let persona"> {{persona.celular}} </mat-cell>
-        </ng-container>
-
-        <ng-container matColumnDef="direccion">
-          <mat-header-cell *matHeaderCellDef mat-sort-header> Dirección</mat-header-cell>
-          <mat-cell *matCellDef="let persona"> {{persona.direccion}} </mat-cell>
-        </ng-container>
-
-        <ng-container matColumnDef="fechaNac">
-          <mat-header-cell *matHeaderCellDef mat-sort-header> Fecha Nacimiento</mat-header-cell>
-          <mat-cell *matCellDef="let persona"> {{formatDate(persona.fechaNac)}} </mat-cell>
-        </ng-container>
-
-        <ng-container matColumnDef="sexo">
-          <mat-header-cell *matHeaderCellDef mat-sort-header> Sexo</mat-header-cell>
-          <mat-cell *matCellDef="let persona"> {{persona.sexo}} </mat-cell>
-        </ng-container>
-
-        <ng-container matColumnDef="acciones">
-          <mat-header-cell *matHeaderCellDef> Acciones</mat-header-cell>
-          <mat-cell *matCellDef="let persona">
-            <button mat-icon-button color="primary" (click)="openEditDialog(persona)">
-              <mat-icon>edit</mat-icon>
-            </button>
-            <button mat-icon-button [color]="persona.estado ? 'accent' : 'warn'"
-                    (click)="toggleEstado(persona)">
-              <mat-icon>{{persona.estado ? 'check_circle' : 'cancel'}}</mat-icon>
-            </button>
-            <button mat-icon-button color="primary" (click)="openDetailDialog(persona)">
-              <mat-icon>visibility</mat-icon>
-            </button>
-          </mat-cell>
-        </ng-container>
-
-        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-        <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
-
-        <tr class="mat-row" *matNoDataRow>
-          <td class="mat-cell" colspan="5">No se encontraron datos que coincidan con el filtro "{{input.value}}"</td>
-        </tr>
-      </mat-table>
-      <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]"
-                     aria-label="Seleccionar página de iglesias">
-      </mat-paginator>
-    </div>
-  `,
-  styles: [`
-    .nuevoPersona-bucar{
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 10px;
-    }
-    .container {
-      padding: 20px;
-    }
-
-    .mat-table {
-      width: 100%;
-      margin-top: 20px;
-    }
-
-    .mat-cell {
-      padding: 8px;
-    }
-    mat-row:hover {
-      background-color: #e0f7fa; /* Cambia este color a uno de tu preferencia */
-    }
-
-  `]
+  templateUrl: './persona-list.component.html',
+  styleUrls: ['./persona-list.component.css']
 })
 export class PersonaListComponent implements OnInit {
   // personas: Persona[] = [];
@@ -181,7 +80,7 @@ export class PersonaListComponent implements OnInit {
 
   openCreateDialog() {
     const dialogRef = this.dialog.open(PersonaFormCrearComponent, {
-      width: '600px'
+      width: '700px'
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -193,7 +92,7 @@ export class PersonaListComponent implements OnInit {
 
   openEditDialog(persona: Persona) {
     const dialogRef = this.dialog.open(PersonaFormEditarComponent, {
-      width: '600px',
+      width: '700px',
       data: persona
     });
 
@@ -206,7 +105,7 @@ export class PersonaListComponent implements OnInit {
 
   openDetailDialog(persona: Persona) {
     this.dialog.open(PersonaDetailComponent, {
-      width: '600px',
+      width: '700px',
       data: persona
     });
   }
